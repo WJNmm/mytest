@@ -23,7 +23,7 @@ define(['jquery', 'template', 'cookie'], function ($,template) {
 
     //验证是否登录，获取登录信息
     var sessionId = $.cookie('PHPSESSID');
-    console.log(sessionId);
+    //console.log(sessionId);
     if (!sessionId && location.pathname != '/main/login') {
         location.href = '/main/login';
     }
@@ -31,7 +31,7 @@ define(['jquery', 'template', 'cookie'], function ($,template) {
     //获取登录信息
     var loginInfo = $.cookie('loginInfo');
     var info = loginInfo ? JSON.parse(loginInfo) : {};
-    console.log(info);
+    //console.log(info);
 
     var tplstr = '<div class="avatar img-circle">'
         + ' <img src="{{tc_avatar}}">'
