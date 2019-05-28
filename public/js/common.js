@@ -1,4 +1,4 @@
-define(['jquery'], function ($) {
+define(['jquery','cookie'], function ($) {
     //NProgress.start();
     //NProgress.done();
 
@@ -20,5 +20,19 @@ define(['jquery'], function ($) {
             }
         });
     });
+
+    //验证是否登录，获取登录信息
+    var sessionId = $.cookie('PHPSESSID');
+    console.log(sessionId);
+    if(!sessionId && location.pathname != '/main/login') {
+        location.href = '/main/login';
+    }
+
+    //获取登录信息
+    var loginInfo = $.cookie('loginInfo');
+    var info = JSON.parse(loginInfo);
+    //console.log(info);
+    $('.profile img').attr('src',info.tc_avatar);
+    $('.profile h4').html(info.tc_name);
 });
 
