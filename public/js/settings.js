@@ -1,4 +1,4 @@
-define(['jquery', 'template', 'util', 'ckeditor', 'uploadify', 'datepicker', 'language', 'region', 'validate', 'form','state'], function ($, template, util, CKIDITOR) {
+define(['jquery', 'template', 'util', 'ckeditor', 'uploadify', 'datepicker', 'language', 'region', 'validate', 'form', 'state'], function ($, template, util, CKIDITOR) {
     //设置导航菜单选中
     util.setMenu('/main/index');
     //调用后台接口填充表单
@@ -20,9 +20,11 @@ define(['jquery', 'template', 'util', 'ckeditor', 'uploadify', 'datepicker', 'la
                 uploader: '/api/uploader/avatar',
                 fileObjName: 'tc_avatar',
                 onUploadSuccess: function (f, data) {
-                    var data = JSON.parse(data);
+                    //var data = JSON.parse(data.trim());
+                    var data = eval('(+data+)');
                     //重置头像的图片地址
                     $('.preview img').attr('src', data.result.path);
+                    //console.log(data);
                 }
             });
 
@@ -42,10 +44,10 @@ define(['jquery', 'template', 'util', 'ckeditor', 'uploadify', 'datepicker', 'la
 
             // 处理表单提交
             $('#settingsForm').validate({
-                sendForm : false,
-                valid : function(){
+                sendForm: false,
+                valid: function () {
                     // 把富文本的数据同步到表单域中
-                    for(var instance in CKEDITOR.instances){
+                    for (var instance in CKEDITOR.instances) {
                         CKEDITOR.instances[instance].updateElement();
                     }
                     // 获取家乡数据
@@ -55,12 +57,12 @@ define(['jquery', 'template', 'util', 'ckeditor', 'uploadify', 'datepicker', 'la
                     var hometown = p + '|' + c + '|' + d;
                     // 所有验证都通过，提交表单
                     $(this).ajaxSubmit({
-                        type : 'post',
-                        url : '/api/teacher/modify',
-                        data : {tc_hometown:hometown},
-                        dataType : 'json',
-                        success : function(data){
-                            if(data.code == 200){
+                        type: 'post',
+                        url: '/api/teacher/modify',
+                        data: {tc_hometown: hometown},
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.code == 200) {
                                 // 刷新页面
                                 location.reload();
                             }
