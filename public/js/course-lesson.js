@@ -14,13 +14,34 @@ define(['jquery', 'template', 'util', 'bootstrap', 'form'], function ($, templat
             var html = template('lessonTpl', data.result);
             $('#lessonInfo').html(html);
 
+            // 表单提交功能
+            function submitForm(url, ctId) {
+                var param = {ct_cs_id: csId};
+                if (ctId) {
+                    param.ct_id = ctId;
+                }
+                $('#submitBtn').click(function () {
+                    $('#modalForm').ajaxSubmit({
+                        type: 'post',
+                        url: url,
+                        data: param,
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.code == 200) {
+                                location.reload();
+                            }
+                        }
+                    });
+                });
+            }
+
             // 处理添加功能
             $('#addBtn').click(function () {
                 var html = template('modalTpl', {operate: '添加课时'});
                 $('#modalInfo').html(html);
                 $('#chapterModal').modal();
                 // 添加提交表单
-                //submitForm('/api/course/chapter/add');
+                submitForm('/api/course/chapter/add');
             });
             // 处理编辑功能
             $('.editLesson').click(function () {
@@ -37,7 +58,7 @@ define(['jquery', 'template', 'util', 'bootstrap', 'form'], function ($, templat
                         // 显示弹窗
                         $('#chapterModal').modal();
                         // 编辑课时提交表单
-                        //submitForm('/api/course/chapter/modify', ctId);
+                        submitForm('/api/course/chapter/modify', ctId);
                     }
                 });
             });
